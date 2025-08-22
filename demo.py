@@ -80,7 +80,7 @@ def show_usage_instructions():
     print(f"")
     print(f"2. **Flask API**:")
     print(f"   Command: source rag-env/bin/activate && python src/app.py")
-    print(f"   URL: http://localhost:5000")
+    print(f"   URL: http://localhost:5001")
     print(f"   Features: REST API, web interface, file upload")
     print(f"")
     print(f"3. **API Endpoints**:")
@@ -90,7 +90,7 @@ def show_usage_instructions():
     print(f"   GET /status - System status")
     print(f"")
     print(f"4. **Example API Usage**:")
-    print(f'   curl -X POST http://localhost:5000/ask \\')
+    print(f'   curl -X POST http://localhost:5001/ask \\')
     print(f'     -H "Content-Type: application/json" \\')
     print(f'     -d \'{"query": "What are the main findings?"}\'')
 

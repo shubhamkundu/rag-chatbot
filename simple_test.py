@@ -154,10 +154,10 @@ def status():
 if __name__ == '__main__':
     print("🚀 Starting RAG Chatbot Demo...")
     print("📁 Papers directory: src/data/papers")
-    print("🌐 Demo will be available at: http://localhost:5000")
+    print("🌐 Demo will be available at: http://localhost:5001")
     print("💡 This is a demo mode without ML models loaded")
     
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)
 '''
     
     with open("demo_flask.py", "w") as f:
@@ -173,12 +173,12 @@ def show_options():
     print()
     print("Option 1: Run Demo Mode (No model downloads)")
     print("  Command: source rag-env/bin/activate && python demo_flask.py")
-    print("  URL: http://localhost:5000")
+    print("  URL: http://localhost:5001")
     print("  Features: Basic interface, file detection, demo responses")
     print()
     print("Option 2: Full System (Requires model downloads ~500MB)")
     print("  Command: source rag-env/bin/activate && python src/app.py")
-    print("  URL: http://localhost:5000")
+    print("  URL: http://localhost:5001")
     print("  Features: Full RAG functionality, real AI responses")
     print()
     print("Option 3: Streamlit Interface")

@@ -148,7 +148,7 @@ def test_flask_app():
         
         # Test if app is running
         try:
-            response = requests.get("http://localhost:5000/status", timeout=10)
+            response = requests.get("http://localhost:5001/status", timeout=10)
             if response.status_code == 200:
                 print("✅ Flask app is running")
                 data = response.json()
@@ -256,14 +256,14 @@ def print_usage_instructions():
     print("2. **Start Flask API:**")
     print("   source rag-env/bin/activate")
     print("   python src/app.py")
-    print("   Open: http://localhost:5000")
+    print("   Open: http://localhost:5001")
     print()
     print("3. **Upload Documents:**")
     print("   - Use the web interface to upload PDF files")
     print("   - Or manually place PDFs in src/data/papers/")
     print()
     print("4. **Test API:**")
-    print("   curl -X POST http://localhost:5000/ask \\")
+    print("   curl -X POST http://localhost:5001/ask \\")
     print("     -H 'Content-Type: application/json' \\")
     print("     -d '{\"query\": \"What are the main findings?\"}'")
 

@@ -40,7 +40,7 @@ class DataConfig:
 class AppConfig:
     """Configuration for the application."""
     flask_host: str = "0.0.0.0"
-    flask_port: int = 5000
+    flask_port: int = 5001
     flask_debug: bool = True
     streamlit_port: int = 8501
     

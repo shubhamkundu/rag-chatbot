@@ -28,7 +28,7 @@ Your RAG chatbot now supports file upload functionality through both the Streaml
 
 ### Flask Interface:
 1. Run the app: `python src/app.py`
-2. Open http://localhost:5000 in your browser
+2. Open http://localhost:5001 in your browser
 3. Use the file upload section at the top of the page
 4. Select PDF files and click "Upload Files"
 5. The system will automatically process and reload the chatbot
@@ -36,7 +36,7 @@ Your RAG chatbot now supports file upload functionality through both the Streaml
 ### API Usage:
 ```bash
 # Upload files via API
-curl -X POST http://localhost:5000/upload \
+curl -X POST http://localhost:5001/upload \
   -F "files=@document1.pdf" \
   -F "files=@document2.pdf"
 ```

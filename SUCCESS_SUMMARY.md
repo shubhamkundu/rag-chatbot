@@ -45,7 +45,7 @@ python demo_flask.py
 source rag-env/bin/activate
 python src/app.py
 ```
-- **URL**: http://localhost:5000
+- **URL**: http://localhost:5002
 - **Features**: Full AI-powered responses, real document analysis
 - **Note**: Downloads ML models (~500MB) on first use
 
@@ -85,12 +85,12 @@ streamlit run streamlit_app.py
 curl http://localhost:5001/status
 
 # Ask a question (full system)
-curl -X POST http://localhost:5000/ask \
+curl -X POST http://localhost:5002/ask \
   -H "Content-Type: application/json" \
   -d '{"query": "What are the main findings?"}'
 
 # Upload files (full system)
-curl -X POST http://localhost:5000/upload \
+curl -X POST http://localhost:5002/upload \
   -F "files=@your_paper.pdf"
 ```
 
