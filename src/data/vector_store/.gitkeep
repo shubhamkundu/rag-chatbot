@@ -1,0 +1,9 @@
+# Vector Store Directory
+
+This directory will contain the FAISS vector store files after processing your research papers.
+
+Files will be automatically generated when you:
+1. Add PDF papers to src/data/papers/
+2. Run the application (Flask or Streamlit)
+
+Do not manually edit files in this directory.
