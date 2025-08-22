@@ -7,7 +7,8 @@ A sophisticated chatbot that uses **Retrieval-Augmented Generation (RAG)** to an
 - 🔍 **Semantic Search**: Find relevant content across multiple research papers
 - 🤖 **AI-Powered Responses**: Generate contextual answers using state-of-the-art language models
 - 📄 **PDF Processing**: Automatically extract and chunk text from PDF research papers
-- 🗄️ **Vector Database**: Efficient similarity search using FAISS
+- � **File Upload**: Upload PDF files directly through the web interface
+- �🗄️ **Vector Database**: Efficient similarity search using FAISS
 - 🌐 **Dual Interface**: Both REST API (Flask) and Web UI (Streamlit)
 - 💾 **Persistent Storage**: Save and load vector embeddings for quick startup
 - 🔧 **Configurable**: Easily customize models, chunk sizes, and other parameters
@@ -27,6 +28,12 @@ python setup.py
 
 ### 2. Add Research Papers
 
+**Option A: Upload via Web Interface (Recommended)**
+- Run the Streamlit app: `streamlit run streamlit_app.py`
+- Use the file upload section in the sidebar to upload PDF files
+- Or run the Flask app: `python src/app.py` and upload files at http://localhost:5000
+
+**Option B: Manual File Placement**
 ```bash
 # Add your PDF research papers to the papers directory
 cp your-research-papers/*.pdf src/data/papers/
@@ -80,6 +87,7 @@ rag-chatbot/
 | `/` | GET | Web interface | - |
 | `/ask` | POST | Ask a question | `{"query": "your question"}` |
 | `/search` | POST | Search papers | `{"query": "search terms", "k": 5}` |
+| `/upload` | POST | Upload PDF files | Form data with `files` field |
 | `/status` | GET | System status | - |
 | `/reload` | POST | Reload papers | - |
 
@@ -95,6 +103,11 @@ curl -X POST http://localhost:5000/ask \
 curl -X POST http://localhost:5000/search \
   -H "Content-Type: application/json" \
   -d '{"query": "neural networks", "k": 3}'
+
+# Upload files
+curl -X POST http://localhost:5000/upload \
+  -F "files=@research_paper1.pdf" \
+  -F "files=@research_paper2.pdf"
 
 # Check status
 curl http://localhost:5000/status

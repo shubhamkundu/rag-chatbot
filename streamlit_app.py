@@ -166,28 +166,55 @@ def main():
         # File management
         st.header("📁 File Management")
         
+        # File Upload Section
+        st.subheader("📤 Upload Documents")
+        uploaded_files = st.file_uploader(
+            "Upload PDF research papers",
+            type=['pdf'],
+            accept_multiple_files=True,
+            help="Upload one or more PDF files to add to your knowledge base"
+        )
+        
+        if uploaded_files:
+            if st.button("💾 Save Uploaded Files", use_container_width=True):
+                success_count = 0
+                error_count = 0
+                papers_dir = os.path.join("src", "data", "papers")
+                
+                # Ensure directory exists
+                os.makedirs(papers_dir, exist_ok=True)
+                
+                with st.spinner("Saving uploaded files..."):
+                    for uploaded_file in uploaded_files:
+                        try:
+                            # Save file to papers directory
+                            file_path = os.path.join(papers_dir, uploaded_file.name)
+                            with open(file_path, "wb") as f:
+                                f.write(uploaded_file.getbuffer())
+                            success_count += 1
+                            st.success(f"✅ Saved: {uploaded_file.name}")
+                        except Exception as e:
+                            error_count += 1
+                            st.error(f"❌ Failed to save {uploaded_file.name}: {str(e)}")
+                    
+                    # Reload chatbot with new files
+                    if success_count > 0:
+                        try:
+                            st.session_state.chatbot.load_papers()
+                            st.success(f"🔄 Reloaded chatbot with {success_count} new files!")
+                            st.rerun()
+                        except Exception as e:
+                            st.error(f"Error reloading chatbot: {str(e)}")
+        
+        st.divider()
+        
         # Show papers directory
+        st.subheader("📂 Current Documents")
         papers_dir = os.path.join("src", "data", "papers")
         
         if not os.path.exists(papers_dir):
             st.warning("Papers directory doesn't exist. Creating it...")
             os.makedirs(papers_dir, exist_ok=True)
-            
-            # Create a README file with instructions
-            readme_path = os.path.join(papers_dir, "README.md")
-            with open(readme_path, "w") as f:
-                f.write("""# Research Papers
-
-Place your PDF research papers in this directory.
-
-## Instructions:
-1. Add PDF files to this folder
-2. Refresh the chatbot to load new papers
-3. Start asking questions!
-
-## Supported formats:
-- PDF files only
-""")
         
         # List existing PDF files
         pdf_files = [f for f in os.listdir(papers_dir) if f.lower().endswith('.pdf')]
@@ -196,10 +223,19 @@ Place your PDF research papers in this directory.
             st.success(f"Found {len(pdf_files)} PDF files:")
             for pdf in pdf_files:
                 file_info = get_file_info(os.path.join(papers_dir, pdf))
-                st.write(f"📄 {pdf} ({file_info['size_mb']} MB)")
+                col_file, col_delete = st.columns([3, 1])
+                with col_file:
+                    st.write(f"📄 {pdf} ({file_info['size_mb']} MB)")
+                with col_delete:
+                    if st.button("🗑️", key=f"delete_{pdf}", help=f"Delete {pdf}"):
+                        try:
+                            os.remove(os.path.join(papers_dir, pdf))
+                            st.success(f"Deleted {pdf}")
+                            st.rerun()
+                        except Exception as e:
+                            st.error(f"Error deleting file: {str(e)}")
         else:
-            st.info("No PDF files found. Add PDF papers to get started!")
-            st.code(f"Papers directory: {papers_dir}")
+            st.info("No PDF files found. Upload some documents to get started!")
         
         # Refresh button
         if st.button("🔄 Reload Papers", use_container_width=True):
