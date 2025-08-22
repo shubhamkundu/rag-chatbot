@@ -3,7 +3,7 @@ FAISS vector store implementation for document embeddings.
 """
 import os
 from typing import List, Optional
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
 
@@ -23,7 +23,7 @@ class FAISSVectorStore:
         self.vector_store: Optional[FAISS] = None
         self.store_path = None
 
-    def create_vector_store(self, documents: List[Document], store_path: str = None):
+    def create_vector_store(self, documents: List[Document], store_path: Optional[str] = None):
         """
         Create a FAISS vector store from documents.
         
@@ -121,7 +121,7 @@ class FAISSVectorStore:
         
         return self.vector_store.similarity_search_with_score(query, k=k)
 
-    def get_retriever(self, search_kwargs: dict = None):
+    def get_retriever(self, search_kwargs: Optional[dict] = None):
         """
         Get a retriever object for use with chains.
         

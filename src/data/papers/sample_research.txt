@@ -1,0 +1,11 @@
+Sample Research Paper
+
+Abstract: This is a sample research paper for testing the RAG chatbot.
+
+Introduction: This paper demonstrates the capabilities of the chatbot.
+
+Methodology: We use machine learning techniques for document processing.
+
+Results: The system successfully processes and retrieves information.
+
+Conclusion: The RAG chatbot works effectively with research papers.
