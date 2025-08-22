@@ -367,6 +367,7 @@ if __name__ == '__main__':
     print("🤖 Starting Research Paper RAG Chatbot...")
     print(f"📁 Papers directory: {papers_dir}")
     print(f"🗄️ Vector store: {vector_store_dir}")
+    print("🌐 App will be available at: http://localhost:5002")
     
     # Create directories if they don't exist
     os.makedirs(papers_dir, exist_ok=True)
@@ -383,4 +384,4 @@ if __name__ == '__main__':
         print(f"   2. Restart the application or use /reload endpoint")
         print(f"   3. Or use the web interface to upload files")
     
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5002, debug=True)
