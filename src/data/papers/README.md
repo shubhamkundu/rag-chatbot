@@ -1,31 +1,26 @@
-# README for Research Papers in RAG Chatbot
+# Research Papers Directory
 
-This directory contains the research papers utilized in the RAG Chatbot project. Below is an overview of the contents and purpose of the papers included.
+## Getting Started
 
-## Sources
+1. **Add PDF Files**: Place your research papers (PDF format) in this directory
+2. **Supported Formats**: Only PDF files are currently supported
+3. **File Names**: Use descriptive names for better organization
 
-1. **Paper Title 1**
-   - **Authors:** Author A, Author B
-   - **Published In:** Journal Name, Year
-   - **Link:** [Link to Paper](http://example.com/paper1)
-   - **Summary:** A brief summary of the paper's content and findings.
+## Example Papers
 
-2. **Paper Title 2**
-   - **Authors:** Author C, Author D
-   - **Published In:** Journal Name, Year
-   - **Link:** [Link to Paper](http://example.com/paper2)
-   - **Summary:** A brief summary of the paper's content and findings.
+You can download sample research papers from:
+- arXiv.org
+- Google Scholar
+- PubMed
+- IEEE Xplore
+- ResearchGate
 
-3. **Paper Title 3**
-   - **Authors:** Author E, Author F
-   - **Published In:** Journal Name, Year
-   - **Link:** [Link to Paper](http://example.com/paper3)
-   - **Summary:** A brief summary of the paper's content and findings.
+## Tips
 
-## Utilization in Chatbot
+- Keep file names descriptive and without special characters
+- Papers should be text-based PDFs (not scanned images for best results)
+- The system will automatically process new papers when you restart the application
 
-The research papers are used to provide context and information for the chatbot's responses. The chatbot retrieves relevant information from these papers using a vector database (FAISS) and generates answers based on the content of the papers through the Retrieval-Augmented Generation (RAG) approach.
+## Current Papers
 
-## Contribution
-
-If you have additional papers or resources that you believe would enhance the chatbot's capabilities, please consider contributing by adding them to this directory and updating this README accordingly.
+(Add your papers here and they will be automatically detected)

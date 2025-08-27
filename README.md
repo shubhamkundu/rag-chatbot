@@ -7,7 +7,8 @@ A sophisticated chatbot that uses **Retrieval-Augmented Generation (RAG)** to an
 - 🔍 **Semantic Search**: Find relevant content across multiple research papers
 - 🤖 **AI-Powered Responses**: Generate contextual answers using state-of-the-art language models
 - 📄 **PDF Processing**: Automatically extract and chunk text from PDF research papers
-- 🗄️ **Vector Database**: Efficient similarity search using FAISS
+- � **File Upload**: Upload PDF files directly through the web interface
+- �🗄️ **Vector Database**: Efficient similarity search using FAISS
 - 🌐 **Dual Interface**: Both REST API (Flask) and Web UI (Streamlit)
 - 💾 **Persistent Storage**: Save and load vector embeddings for quick startup
 - 🔧 **Configurable**: Easily customize models, chunk sizes, and other parameters
@@ -21,30 +22,64 @@ A sophisticated chatbot that uses **Retrieval-Augmented Generation (RAG)** to an
 git clone <your-repo-url>
 cd rag-chatbot
 
-# Run setup script (creates directories and installs dependencies)
+# Create and activate virtual environment
+python -m venv rag-env
+source rag-env/bin/activate  # On Windows: rag-env\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Create required directories
+mkdir -p data/papers data/vector_store
+
+# Optional: Run setup script for additional configuration
 python setup.py
 ```
 
 ### 2. Add Research Papers
 
+**Option A: Upload via Web Interface (Recommended)**
+- Run the Streamlit app: `streamlit run streamlit_app.py`
+- Use the file upload section in the sidebar to upload PDF files
+- Or run the Flask app: `python src/app.py` and upload files at http://localhost:5002
+
+**Option B: Manual File Placement**
 ```bash
 # Add your PDF research papers to the papers directory
-cp your-research-papers/*.pdf src/data/papers/
+cp your-research-papers/*.pdf data/papers/
 ```
 
 ### 3. Run the Application
 
 **Option A: Streamlit Web Interface (Recommended)**
 ```bash
+# Activate virtual environment first
+source rag-env/bin/activate
+
+# Start Streamlit interface
 streamlit run streamlit_app.py
 ```
 Then open http://localhost:8501
 
 **Option B: Flask API**
 ```bash
+# Activate virtual environment first
+source rag-env/bin/activate
+
+# Full RAG system (downloads ML models on first run)
 python src/app.py
 ```
-Then open http://localhost:5000
+Then open http://localhost:5002
+
+**Option C: Demo Mode (No ML Models)**
+```bash
+# Activate virtual environment first
+source rag-env/bin/activate
+
+# Lightweight demo without model downloads
+python demo_flask.py
+```
+Then open http://localhost:5001
 
 ## Project Structure 📁
 
@@ -56,16 +91,17 @@ rag-chatbot/
 │   ├── document_loader.py     # PDF processing and text chunking
 │   ├── chatbot/
 │   │   └── __init__.py        # Main chatbot orchestration
-│   ├── data/
-│   │   ├── papers/            # 📄 Place your PDF papers here
-│   │   └── vector_store/      # 🗄️ Auto-generated vector database
 │   ├── rag/
 │   │   └── pipeline.py        # RAG implementation
 │   ├── vectorstore/
 │   │   └── faiss_store.py     # FAISS vector store wrapper
 │   └── utils/
 │       └── helpers.py         # Utility functions
+├── data/
+│   ├── papers/                # 📄 Place your PDF papers here
+│   └── vector_store/          # 🗄️ Auto-generated vector database
 ├── streamlit_app.py           # Streamlit web interface
+├── demo_flask.py              # Demo mode (lightweight testing)
 ├── setup.py                   # Setup and installation script
 ├── requirements.txt           # Python dependencies
 └── README.md                  # This file
@@ -73,13 +109,14 @@ rag-chatbot/
 
 ## API Endpoints 🌐
 
-### Flask API (http://localhost:5000)
+### Flask API (http://localhost:5002)
 
 | Endpoint | Method | Description | Body |
 |----------|--------|-------------|------|
 | `/` | GET | Web interface | - |
 | `/ask` | POST | Ask a question | `{"query": "your question"}` |
 | `/search` | POST | Search papers | `{"query": "search terms", "k": 5}` |
+| `/upload` | POST | Upload PDF files | Form data with `files` field |
 | `/status` | GET | System status | - |
 | `/reload` | POST | Reload papers | - |
 
@@ -87,17 +124,22 @@ rag-chatbot/
 
 ```bash
 # Ask a question
-curl -X POST http://localhost:5000/ask \
+curl -X POST http://localhost:5002/ask \
   -H "Content-Type: application/json" \
   -d '{"query": "What are the main findings about machine learning?"}'
 
 # Search papers
-curl -X POST http://localhost:5000/search \
+curl -X POST http://localhost:5002/search \
   -H "Content-Type: application/json" \
   -d '{"query": "neural networks", "k": 3}'
 
+# Upload files
+curl -X POST http://localhost:5002/upload \
+  -F "files=@research_paper1.pdf" \
+  -F "files=@research_paper2.pdf"
+
 # Check status
-curl http://localhost:5000/status
+curl http://localhost:5002/status
 ```
 
 ## Configuration ⚙️
@@ -111,11 +153,11 @@ export LLM_MODEL="microsoft/DialoGPT-small"
 export DEVICE="cpu"  # or "cuda" for GPU
 
 # Paths
-export PAPERS_DIRECTORY="src/data/papers"
-export VECTOR_STORE_PATH="src/data/vector_store"
+export PAPERS_DIRECTORY="data/papers"
+export VECTOR_STORE_PATH="data/vector_store"
 
 # App settings
-export FLASK_PORT="5000"
+export FLASK_PORT="5002"
 export FLASK_DEBUG="true"
 ```
 
@@ -182,16 +224,35 @@ source rag-env/bin/activate  # On Windows: rag-env\Scripts\activate
 pip install -r requirements.txt
 
 # Create directories
-mkdir -p src/data/papers
-mkdir -p src/data/vector_store
+mkdir -p data/papers
+mkdir -p data/vector_store
 ```
 
 ## Troubleshooting 🔧
 
+### Port Configuration
+
+**Important**: This application runs on port **5002** to avoid conflicts with Apple's AirPlay service which uses port 5000 on macOS.
+
+**Available Ports:**
+- **Port 5002**: Main Flask application (recommended)
+- **Port 5001**: Demo mode (lightweight, no ML models)
+- **Port 8501**: Streamlit web interface
+
+**Port Conflicts:**
+If you encounter "403 Forbidden" errors, check for port conflicts:
+```bash
+# Check what's using port 5000 (usually AirPlay on macOS)
+lsof -i :5000
+
+# Check available ports
+lsof -i :5001 :5002 :8501
+```
+
 ### Common Issues
 
 **"No PDF files found"**
-- Ensure PDF files are in `src/data/papers/`
+- Ensure PDF files are in `data/papers/`
 - Check file extensions (must be `.pdf`)
 - Verify files are readable (not corrupted)
 
@@ -229,11 +290,16 @@ mkdir -p src/data/vector_store
 ### Testing
 
 ```bash
-# Test with sample papers
-python setup.py
+# Quick test with demo mode (no model downloads)
+source rag-env/bin/activate
+python demo_flask.py
 
-# Add test PDFs to src/data/papers/
-# Run the application and test queries
+# Test API endpoints
+curl http://localhost:5001/status
+
+# For full testing, add test PDFs to data/papers/
+# Then run the main application
+python src/app.py
 ```
 
 ## Contributing 🤝

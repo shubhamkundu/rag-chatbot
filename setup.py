@@ -89,7 +89,7 @@ def main():
     print("2. Run the Flask app: python src/app.py")
     print("3. Or run the Streamlit app: streamlit run streamlit_app.py")
     print("\n📚 Documentation:")
-    print("- Flask API will be available at: http://localhost:5000")
+    print("- Flask API will be available at: http://localhost:5001")
     print("- Streamlit interface will be available at: http://localhost:8501")
     
     # Check for existing papers
